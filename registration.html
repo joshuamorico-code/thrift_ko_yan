@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Hanger | Thrif't Ko Yan</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/widgets.css" />
-    <script src="javascript/pages.js" defer></script>
-    <script src="javascript/chatbot.js" defer></script>
+    <title>Create an Account | Thrif't Ko Yan</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/widgets.css" />
+    <script src="../javascript/pages.js" defer></script>
+    <script src="../javascript/chatbot.js" defer></script>
   </head>
-  <body data-page="hanger">
+  <body data-page="register">
     <header class="site-header">
       <div class="header-inner">
         <a class="brand" href="index.html" aria-label="Thrif't Ko Yan home">
-          <img class="brand-logo" src="images/logo.jpg" alt="Thrif't Ko Yan logo" />
+          <img class="brand-logo" src="../images/logo.jpg" alt="Thrif't Ko Yan logo" />
           <span class="brand-copy">
             <span class="brand-name">Thrif't Ko Yan</span>
             <span class="brand-tagline">PRE-LOVED · STYLISH · SUSTAINABLE</span>
@@ -22,47 +22,49 @@
         <nav class="main-nav" aria-label="Main navigation">
           <a class="nav-link" href="index.html">Home</a>
           <a class="nav-link" href="list.html">List it</a>
-          <a class="nav-link active" aria-current="page" href="Hanger.html">Hanger</a>
+          <a class="nav-link" href="Hanger.html">Hanger</a>
           <a class="nav-link" href="Login.html">Login</a>
         </nav>
       </div>
     </header>
 
-    <main class="page-main section-shell">
-      <div class="page-head">
-        <p class="eyebrow">YOUR PICKS</p>
-        <h1 class="page-title">Your Hanger</h1>
-        <p class="page-lead">Gems you've picked live here until you're ready to buy-up.</p>
-      </div>
+    <main class="auth-main">
+      <section class="auth-card" aria-labelledby="register-title">
+        <p class="eyebrow">JOIN THE COMMUNITY</p>
+        <h1 class="page-title" id="register-title">Create an Account</h1>
+        <p class="page-lead">Join and find your next Gems.</p>
 
-      <div class="hanger-layout">
-        <section aria-label="Gems in your Hanger">
-          <div class="empty-state" id="hanger-empty">
-            <div class="empty-icon" aria-hidden="true">✧</div>
-            <h3>Your Hanger is empty.</h3>
-            <p>Start discovering your next Gem!</p>
-            <a class="button button-secondary" href="list.html#browse">Time to find your next Gem</a>
+        <form class="form-grid" id="register-form">
+          <div class="field">
+            <label for="reg-name">Full name</label>
+            <input type="text" id="reg-name" name="fullname" placeholder="e.g. Juan Dela Cruz" autocomplete="name" required />
           </div>
-          <ul class="hanger-items" id="hanger-items"></ul>
-        </section>
+          <div class="field">
+            <label for="reg-email">Email address</label>
+            <input type="email" id="reg-email" name="email" placeholder="your@email.com" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="reg-pass1">Create password <span class="hint">(at least 8 characters)</span></label>
+            <input type="password" id="reg-pass1" name="pass1" autocomplete="new-password" minlength="8" required />
+          </div>
+          <div class="field">
+            <label for="reg-pass2">Confirm password</label>
+            <input type="password" id="reg-pass2" name="pass2" autocomplete="new-password" required />
+          </div>
+          <div class="form-actions">
+            <button class="button button-primary" type="submit">Register <span aria-hidden="true">→</span></button>
+            <p class="form-status" id="register-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
 
-        <aside class="summary-card" aria-labelledby="summary-title">
-          <h2 id="summary-title">Summary</h2>
-          <dl class="summary-rows">
-            <div><dt>Subtotal</dt><dd id="subtotal">₱0</dd></div>
-            <div><dt>Tawad total</dt><dd>—</dd></div>
-            <div><dt>Shipping fee</dt><dd>—</dd></div>
-          </dl>
-          <button class="button button-primary" id="buy-up" type="button" disabled>Proceed to buy-up</button>
-          <p class="summary-note" id="buy-note">Add Gems first to buy-up</p>
-          <p class="form-status" id="buy-status" role="status" aria-live="polite"></p>
-        </aside>
-      </div>
+        <p class="auth-switch">Already have an account? <a href="Login.html">Log in here</a></p>
+        <p class="auth-switch"><a href="index.html">← Back to Home</a></p>
+      </section>
     </main>
 
     <footer class="site-footer">
       <div class="footer-inner section-shell">
-        <a class="footer-brand" href="/html/index.html"
+        <a class="footer-brand" href="index.html"
           >Thrif't Ko Yan<span>PRE-LOVED · STYLISH · SUSTAINABLE</span></a
         >
         <div class="footer-links">
