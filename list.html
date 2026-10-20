@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Hanger | Thrif't Ko Yan</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/widgets.css" />
-    <script src="javascript/pages.js" defer></script>
-    <script src="javascript/chatbot.js" defer></script>
+    <title>List your Gems | Thrif't Ko Yan</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/widgets.css" />
+    <script src="../javascript/pages.js" defer></script>
+    <script src="../javascript/chatbot.js" defer></script>
   </head>
-  <body data-page="hanger">
+  <body data-page="list">
     <header class="site-header">
       <div class="header-inner">
         <a class="brand" href="index.html" aria-label="Thrif't Ko Yan home">
-          <img class="brand-logo" src="images/logo.jpg" alt="Thrif't Ko Yan logo" />
+          <img class="brand-logo" src="../images/logo.jpg" alt="Thrif't Ko Yan logo" />
           <span class="brand-copy">
             <span class="brand-name">Thrif't Ko Yan</span>
             <span class="brand-tagline">PRE-LOVED · STYLISH · SUSTAINABLE</span>
@@ -21,8 +21,8 @@
         </a>
         <nav class="main-nav" aria-label="Main navigation">
           <a class="nav-link" href="index.html">Home</a>
-          <a class="nav-link" href="list.html">List it</a>
-          <a class="nav-link active" aria-current="page" href="hanger.html">Hanger</a>
+          <a class="nav-link active" aria-current="page" href="list.html">List it</a>
+          <a class="nav-link" href="Hanger.html">Hanger</a>
           <a class="nav-link" href="Login.html">Login</a>
         </nav>
       </div>
@@ -30,34 +30,79 @@
 
     <main class="page-main section-shell">
       <div class="page-head">
-        <p class="eyebrow">YOUR PICKS</p>
-        <h1 class="page-title">Your Hanger</h1>
-        <p class="page-lead">Gems you've picked live here until you're ready to buy-up.</p>
+        <p class="eyebrow">SELL SOMETHING SPECIAL</p>
+        <h1 class="page-title">List your Gems</h1>
+        <p class="page-lead">
+          Share a pre-loved piece and give it another story. Add a photo, set
+          your price, and let the community discover it.
+        </p>
       </div>
 
-      <div class="hanger-layout">
-        <section aria-label="Gems in your Hanger">
-          <div class="empty-state" id="hanger-empty">
-            <div class="empty-icon" aria-hidden="true">✧</div>
-            <h3>Your Hanger is empty.</h3>
-            <p>Start discovering your next Gem!</p>
-            <a class="button button-secondary" href="list.html#browse">Time to find your next Gem</a>
+      <section class="panel" aria-labelledby="list-form-title">
+        <h2 class="tky-sr-only" id="list-form-title">New listing</h2>
+        <form class="form-grid" id="list-form" novalidate>
+          <div class="field">
+            <span class="field-label">Upload a photo of your Gem</span>
+            <input class="tky-sr-only" type="file" id="photo-input" name="photo" accept="image/*" />
+            <label class="upload-box" for="photo-input">
+              <img class="upload-preview" id="photo-preview" alt="Preview of your chosen photo" hidden />
+              <span class="upload-icon" aria-hidden="true">✧</span>
+              <strong id="upload-text">Tap to choose a photo</strong>
+              <span>JPG, PNG or WebP</span>
+            </label>
           </div>
-          <ul class="hanger-items" id="hanger-items"></ul>
-        </section>
 
-        <aside class="summary-card" aria-labelledby="summary-title">
-          <h2 id="summary-title">Summary</h2>
-          <dl class="summary-rows">
-            <div><dt>Subtotal</dt><dd id="subtotal">₱0</dd></div>
-            <div><dt>Tawad total</dt><dd>—</dd></div>
-            <div><dt>Shipping fee</dt><dd>—</dd></div>
-          </dl>
-          <button class="button button-primary" id="buy-up" type="button" disabled>Proceed to buy-up</button>
-          <p class="summary-note" id="buy-note">Add Gems first to buy-up</p>
-          <p class="form-status" id="buy-status" role="status" aria-live="polite"></p>
-        </aside>
-      </div>
+          <div class="field">
+            <label for="gem-name">Gem name</label>
+            <input type="text" id="gem-name" name="name" maxlength="60" placeholder="Name your Gem" autocomplete="off" />
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="gem-price">Price (₱)</label>
+              <input type="number" id="gem-price" name="price" min="1" max="1000000" step="any" inputmode="decimal" placeholder="Your preferred price" />
+            </div>
+            <div class="field">
+              <label for="gem-condition">Condition</label>
+              <select id="gem-condition" name="condition">
+                <option value="">Select the condition</option>
+                <option>Brand New</option>
+                <option>Like New</option>
+                <option>Good — Used</option>
+                <option>Fair — Well Used</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="gem-desc">Description <span class="hint">(optional)</span></label>
+            <textarea id="gem-desc" name="description" maxlength="500" placeholder="Describe your special Gem: size, brand, story..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="button button-primary" type="submit">Be Discovered <span aria-hidden="true">→</span></button>
+            <p class="form-status" id="list-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+        <p class="page-links"><a class="text-link" href="index.html">← Back to Home</a></p>
+      </section>
+
+      <section class="browse-section" id="browse" aria-labelledby="browse-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">FRESH FINDS</p>
+            <h2 id="browse-title">Browse Gems</h2>
+            <p class="section-description">Add the ones you love to your Hanger.</p>
+          </div>
+          <a class="text-link" href="Hanger.html">Go to Hanger <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="empty-state" id="gem-empty">
+          <div class="empty-icon" aria-hidden="true">✧</div>
+          <h3>No Gems listed yet.</h3>
+          <p>Be the first to list a special pre-loved piece using the form above.</p>
+        </div>
+        <ul class="gem-grid" id="gem-grid"></ul>
+      </section>
     </main>
 
     <footer class="site-footer">
