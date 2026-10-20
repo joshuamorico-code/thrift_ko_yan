@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Thrif't Ko Yan</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/widgets.css" />
+    <script src="/javascript/pages.js" defer></script>
+    <script src="/javascript/chatbot.js" defer></script>
+  </head>
+  <body data-page="login">
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/html/index.html" aria-label="Thrif't Ko Yan home">
+          <img class="brand-logo" src="/images/logo.jpg" alt="Thrif't Ko Yan logo" />
+          <span class="brand-copy">
+            <span class="brand-name">Thrif't Ko Yan</span>
+            <span class="brand-tagline">PRE-LOVED · STYLISH · SUSTAINABLE</span>
+          </span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a class="nav-link" href="/html/index.html">Home</a>
+          <a class="nav-link" href="/html/list.html">List it</a>
+          <a class="nav-link" href="/html/Hanger.html">Hanger</a>
+          <a class="nav-link active" aria-current="page" href="/html/Login.html">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="auth-main">
+      <section class="auth-card" aria-labelledby="login-title">
+        <p class="eyebrow">WELCOME BACK</p>
+        <h1 class="page-title" id="login-title">Welcome to Thrif't Ko Yan</h1>
+        <p class="page-lead">Log in to see your Hanger and list your Gems.</p>
+
+        <form class="form-grid" id="login-form" novalidate>
+          <div class="field">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" name="username" placeholder="e.g. Juan Dela Cruz" autocomplete="username" required />
+          </div>
+          <div class="field">
+            <label for="login-pass">Password</label>
+            <input type="password" id="login-pass" name="pass" autocomplete="current-password" required />
+          </div>
+          <div class="form-actions">
+            <button class="button button-primary" type="submit">Login <span aria-hidden="true">→</span></button>
+            <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <p class="auth-switch">Don't have an account yet? <a href="Registration.html">Sign up</a></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner section-shell">
+        <a class="footer-brand" href="/html/index.html"
+          >Thrif't Ko Yan<span>PRE-LOVED · STYLISH · SUSTAINABLE</span></a
+        >
+        <div class="footer-links">
+          <strong>Quick links</strong>
+          <a href="/html/index.html">Home</a>
+          <a href="/html/list.html">List it</a>
+          <a href="/html/Hanger.html">Hanger</a>
+          <a href="/html/Login.html">Login</a>
+          <a href="/html/index.html#feedback">Feedback</a>
+        </div>
+        <div class="footer-note">
+          <strong>Thrift a little. Change a lot.</strong>
+          <p>Thanks for giving pre-loved pieces a new home.</p>
+        </div>
+      </div>
+      <div class="footer-bottom section-shell">
+        <span>© 2026 Thrif't Ko Yan</span
+        ><span>Pre-loved · Stylish · Sustainable</span>
+      </div>
+    </footer>
+  </body>
+</html>
