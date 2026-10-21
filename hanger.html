@@ -1,87 +1,119 @@
-  <!doctype html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Your Hanger | Thrif't Ko Yan</title>
-      <link rel="stylesheet" href="../css/style.css" />
-      <link rel="stylesheet" href="../css/widgets.css" />
-      <script src="../javascript/pages.js" defer></script>
-      <script src="../javascript/chatbot.js" defer></script>
-    </head>
-    <body data-page="hanger">
-      <header class="site-header">
-        <div class="header-inner">
-          <a class="brand" href="index.html" aria-label="Thrif't Ko Yan home">
-            <img class="brand-logo" src="../images/logo.jpg" alt="Thrif't Ko Yan logo" />
-            <span class="brand-copy">
-              <span class="brand-name">Thrif't Ko Yan</span>
-              <span class="brand-tagline">PRE-LOVED · STYLISH · SUSTAINABLE</span>
-            </span>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Keep the pre-loved pieces you love close in your Thrif't Ko Yan Hanger."
+    />
+    <title>Your Hanger | Thrif't Ko Yan</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/widgets.css" />
+    <script src="/javascript/pages.js" defer></script>
+    <script src="/javascript/chatbot.js" defer></script>
+  </head>
+  <body data-page="hanger">
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="index.html" aria-label="Thrif't Ko Yan home">
+          <img class="brand-logo" src="/images/logo.jpg" alt="Thrif't Ko Yan logo" />
+          <span class="brand-copy">
+            <span class="brand-name">Thrif't Ko Yan</span>
+            <span class="brand-tagline">PRE-LOVED · STYLISH · SUSTAINABLE</span>
+          </span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="list.html">List it</a>
+          <a class="nav-link active" aria-current="page" href="Hanger.html">Hanger</a>
+          <a class="nav-link" href="Login.html">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-main section-shell hanger-page">
+      <section class="hanger-hero" aria-labelledby="hanger-title">
+        <div class="hanger-hero-copy">
+          <p class="hanger-kicker"><span></span> YOUR PERSONAL EDIT · 01</p>
+          <h1 id="hanger-title">Your <em>Hanger.</em></h1>
+          <p class="hanger-lead">
+            Good finds deserve a second life. Keep the pieces you love, all in one place.
+          </p>
+          <a class="hanger-explore" href="list.html#browse">
+            Find your next favorite <span aria-hidden="true">↗</span>
           </a>
-          <nav class="main-nav" aria-label="Main navigation">
-            <a class="nav-link" href="index.html">Home</a>
-            <a class="nav-link" href="list.html">List it</a>
-            <a class="nav-link active" aria-current="page" href="Hanger.html">Hanger</a>
-            <a class="nav-link" href="Login.html">Login</a>
-          </nav>
         </div>
-      </header>
-
-      <main class="page-main section-shell">
-        <div class="page-head">
-          <p class="eyebrow">YOUR PICKS</p>
-          <h1 class="page-title">Your Hanger</h1>
-          <p class="page-lead">Gems you've picked live here until you're ready to buy-up.</p>
+        <div class="hanger-art" aria-hidden="true">
+          <span class="hanger-art-orbit"></span>
+          <span class="hanger-art-spark">✳</span>
+          <svg class="hanger-art-shape" viewBox="0 0 240 180">
+            <path d="M120 51V31a12 12 0 1 1 12 12" />
+            <path d="m120 51-94 68c-6 4-3 13 4 13h180c7 0 10-9 4-13l-94-68Z" />
+          </svg>
+          <span class="hanger-art-caption">PRE-LOVED<br />&amp; RE-LOVED</span>
+          <span class="hanger-art-index">TKY / 01</span>
         </div>
+      </section>
 
-        <div class="hanger-layout">
-          <section aria-label="Gems in your Hanger">
-            <div class="empty-state" id="hanger-empty">
-              <div class="empty-icon" aria-hidden="true">✧</div>
-              <h3>Your Hanger is empty.</h3>
-              <p>Start discovering your next Gem!</p>
-              <a class="button button-secondary" href="list.html#browse">Time to find your next Gem</a>
-            </div>
-            <ul class="hanger-items" id="hanger-items"></ul>
-          </section>
-
-          <aside class="summary-card" aria-labelledby="summary-title">
-            <h2 id="summary-title">Summary</h2>
-            <dl class="summary-rows">
-              <div><dt>Subtotal</dt><dd id="subtotal">₱0</dd></div>
-              <div><dt>Tawad total</dt><dd>—</dd></div>
-              <div><dt>Shipping fee</dt><dd>—</dd></div>
-            </dl>
-            <button class="button button-primary" id="buy-up" type="button" disabled>Proceed to buy-up</button>
-            <p class="summary-note" id="buy-note">Add Gems first to buy-up</p>
-            <p class="form-status" id="buy-status" role="status" aria-live="polite"></p>
-          </aside>
-        </div>
-      </main>
-
-      <footer class="site-footer">
-        <div class="footer-inner section-shell">
-          <a class="footer-brand" href="index.html"
-            >Thrif't Ko Yan<span>PRE-LOVED · STYLISH · SUSTAINABLE</span></a
-          >
-          <div class="footer-links">
-            <strong>Quick links</strong>
-            <a href="index.html">Home</a>
-            <a href="list.html">List it</a>
-            <a href="Hanger.html">Hanger</a>
-            <a href="Login.html">Login</a>
-            <a href="index.html#feedback">Feedback</a>
+      <div class="hanger-layout">
+        <section class="hanger-collection" aria-label="Gems in your Hanger">
+          <div class="hanger-section-heading">
+            <h2>Your collection</h2>
+            <span>Pieces picked by you</span>
           </div>
-          <div class="footer-note">
-            <strong>Thrift a little. Change a lot.</strong>
-            <p>Thanks for giving pre-loved pieces a new home.</p>
+          <div class="empty-state hanger-empty" id="hanger-empty">
+            <div class="empty-icon" aria-hidden="true">✳</div>
+            <p class="hanger-empty-kicker">A LITTLE SPACE FOR SOMETHING SPECIAL</p>
+            <h3>Your next favorite is out there.</h3>
+            <p>Browse one-of-a-kind finds and save the pieces that feel like you.</p>
+            <a class="button button-primary" href="list.html#browse">
+              Explore the finds <span aria-hidden="true">↗</span>
+            </a>
           </div>
+          <ul class="hanger-items" id="hanger-items"></ul>
+        </section>
+
+        <aside class="summary-card hanger-summary" aria-labelledby="summary-title">
+          <p class="hanger-summary-kicker">A GOOD CHOICE, ADDED UP</p>
+          <h2 id="summary-title">Your summary</h2>
+          <dl class="summary-rows">
+            <div><dt>Subtotal</dt><dd id="subtotal">₱0</dd></div>
+            <div><dt>Tawad total</dt><dd>—</dd></div>
+            <div><dt>Shipping fee</dt><dd>—</dd></div>
+          </dl>
+          <button class="button button-primary" id="buy-up" type="button" disabled>
+            Proceed to buy-up <span aria-hidden="true">↗</span>
+          </button>
+          <p class="summary-note" id="buy-note">Add Gems first to buy-up</p>
+          <p class="form-status" id="buy-status" role="status" aria-live="polite"></p>
+          <p class="hanger-summary-footnote"><span aria-hidden="true">✳</span> Better finds. Lighter footprint.</p>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner section-shell">
+        <a class="footer-brand" href="index.html"
+          >Thrif't Ko Yan<span>PRE-LOVED · STYLISH · SUSTAINABLE</span></a
+        >
+        <div class="footer-links">
+          <strong>Quick links</strong>
+          <a href="index.html">Home</a>
+          <a href="list.html">List it</a>
+          <a href="Hanger.html">Hanger</a>
+          <a href="Login.html">Login</a>
+          <a href="index.html#feedback">Feedback</a>
         </div>
-        <div class="footer-bottom section-shell">
-          <span>© 2026 Thrif't Ko Yan</span
-          ><span>Pre-loved · Stylish · Sustainable</span>
+        <div class="footer-note">
+          <strong>Thrift a little. Change a lot.</strong>
+          <p>Thanks for giving pre-loved pieces a new home.</p>
         </div>
-      </footer>
-    </body>
-  </html>
+      </div>
+      <div class="footer-bottom section-shell">
+        <span>© 2026 Thrif't Ko Yan</span
+        ><span>Pre-loved · Stylish · Sustainable</span>
+      </div>
+    </footer>
+  </body>
+</html>
