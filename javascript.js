@@ -156,7 +156,6 @@ const STORAGE = {
   cart: "josh-demo-cart",
   favorites: "josh-demo-favorites",
   listings: "josh-demo-listings",
-  feedback: "josh-demo-feedback",
   orders: "thrift-ko-yan-demo-orders",
 };
 const readStored = (key, fallback) => {
@@ -193,6 +192,120 @@ let selectedRating = 0;
 let toastTimer;
 let pendingCancelOrder = "";
 let chatHasWelcomed = false;
+let feedbackReviews = [];
+let feedbackClient = null;
+
+function renderFeedback() {
+  const feedbackList = document.getElementById("feedback-list");
+  const reviews = Array.isArray(feedbackReviews)
+    ? feedbackReviews.filter(
+        (review) =>
+          review &&
+          Number.isInteger(Number(review.rating)) &&
+          Number(review.rating) >= 1 &&
+          Number(review.rating) <= 5 &&
+          typeof review.message === "string",
+      )
+    : [];
+
+  if (!reviews.length) {
+    const emptyMessage = feedbackClient
+      ? "No public reviews yet. Be the first to leave a note."
+      : "Community reviews will appear here once Supabase is connected.";
+    feedbackList.innerHTML = `<p class="feedback-empty">${emptyMessage}</p>`;
+    return;
+  }
+
+  feedbackList.innerHTML = `<h3>Community notes <span>(${reviews.length})</span></h3>${reviews
+    .map((review) => {
+      const rating = Number(review.rating);
+      const name =
+        typeof review.display_name === "string" && review.display_name.trim()
+          ? review.display_name.trim()
+          : "Anonymous";
+      const date = review.created_at ? new Date(review.created_at) : null;
+      const dateLabel =
+        date && !Number.isNaN(date.getTime())
+          ? date.toLocaleDateString()
+          : "";
+      return `<article class="feedback-review"><div class="feedback-review-heading"><strong>${escapeHTML(name)}</strong><span class="feedback-review-date">${escapeHTML(dateLabel)}</span></div><div class="feedback-review-rating" role="img" aria-label="${rating} out of 5 stars">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</div><p>${escapeHTML(review.message)}</p></article>`;
+    })
+    .join("")}`;
+}
+
+async function loadFeedback() {
+  const status = document.getElementById("feedback-status");
+  status.textContent = "Loading community feedback…";
+  try {
+    const reviews = [];
+    const pageSize = 500;
+    for (let offset = 0; ; offset += pageSize) {
+      const { data, error } = await feedbackClient
+        .from("feedback")
+        .select("id, display_name, rating, message, created_at")
+        .order("created_at", { ascending: false })
+        .order("id", { ascending: false })
+        .range(offset, offset + pageSize - 1);
+      if (error) throw error;
+      reviews.push(...data);
+      if (data.length < pageSize) break;
+    }
+    feedbackReviews = reviews;
+    renderFeedback();
+    status.textContent = `${reviews.length} public review${reviews.length === 1 ? "" : "s"}.`;
+  } catch (error) {
+    console.error("Could not load shared feedback from Supabase.", error);
+    status.textContent =
+      error.code === "PGRST205"
+        ? "The Supabase feedback table is missing. Run supabase-feedback.sql in your Supabase SQL Editor."
+        : "Shared feedback could not be loaded. Check your connection and Supabase setup.";
+  }
+}
+
+function initializeFeedback() {
+  const status = document.getElementById("feedback-status");
+  const supabaseUrl = "https://qghzznqqirsiwlvgoety.supabase.co";
+  const supabaseAnonKey =
+    "sb_publishable_qHWywP_Mgm4uWqyoUg8afA_5wRP-CCd";
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    status.textContent =
+      "Supabase setup is required before reviews can be shared. See SUPABASE_SETUP.md.";
+    renderFeedback();
+    return;
+  }
+  if (!window.supabase) {
+    status.textContent =
+      "The Supabase library could not be loaded. Check your internet connection.";
+    return;
+  }
+  feedbackClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+  feedbackClient
+    .channel("public-feedback")
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "feedback" },
+      ({ new: review }) => {
+        if (!feedbackReviews.some((item) => item.id === review.id)) {
+          feedbackReviews.unshift(review);
+          feedbackReviews.sort(
+            (left, right) =>
+              new Date(right.created_at) - new Date(left.created_at),
+          );
+          renderFeedback();
+          status.textContent = `${feedbackReviews.length} public review${feedbackReviews.length === 1 ? "" : "s"}.`;
+        }
+      },
+    )
+    .subscribe((subscriptionStatus) => {
+      if (subscriptionStatus === "CHANNEL_ERROR") {
+        console.error(
+          "Could not subscribe to live feedback updates. Check the Supabase Realtime setup.",
+        );
+      }
+    });
+  loadFeedback();
+}
 
 const money = (amount) => `₱${Number(amount || 0).toLocaleString("en-PH")}`;
 const escapeHTML = (value) =>
@@ -602,28 +715,73 @@ document.querySelectorAll(".rating-select button").forEach((button) => {
   });
 });
 
-document.getElementById("feedback-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (!requireUser("feedback")) return;
-  if (!selectedRating) {
-    showToast("Choose a star rating before sending your note.");
-    return;
-  }
-  const feedback = readStored(STORAGE.feedback, []);
-  feedback.push({
-    rating: selectedRating,
-    message: document.getElementById("feedback-message").value.trim(),
-    date: new Date().toISOString(),
+document
+  .getElementById("feedback-anonymous")
+  .addEventListener("change", (event) => {
+    const nameInput = document.getElementById("feedback-name");
+    nameInput.required = !event.currentTarget.checked;
+    nameInput.disabled = event.currentTarget.checked;
+    if (event.currentTarget.checked) nameInput.value = "";
   });
-  if (!writeStored(STORAGE.feedback, feedback)) return;
-  event.currentTarget.reset();
-  selectedRating = 0;
-  document.querySelectorAll(".rating-select button").forEach((star) => {
-    star.classList.remove("selected");
-    star.textContent = "☆";
+
+document
+  .getElementById("feedback-form")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!feedbackClient) {
+      showToast("Supabase must be set up before feedback can be shared.");
+      return;
+    }
+    if (!selectedRating) {
+      showToast("Choose a star rating before sending your note.");
+      return;
+    }
+    const form = event.currentTarget;
+    const anonymous = document.getElementById("feedback-anonymous").checked;
+    const displayName = anonymous
+      ? "Anonymous"
+      : document.getElementById("feedback-name").value.trim();
+    if (!displayName) {
+      showToast("Add a display name or choose anonymous.");
+      return;
+    }
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    try {
+      const { data, error } = await feedbackClient
+        .from("feedback")
+        .insert({
+          display_name: displayName,
+          rating: selectedRating,
+          message: document.getElementById("feedback-message").value.trim(),
+        })
+        .select("id, display_name, rating, message, created_at")
+        .single();
+      if (error) throw error;
+      feedbackReviews.unshift(data);
+      renderFeedback();
+      document.getElementById("feedback-status").textContent =
+        "Your review is public and visible to everyone.";
+      form.reset();
+      document.getElementById("feedback-name").disabled = false;
+      document.getElementById("feedback-name").required = true;
+      selectedRating = 0;
+      document.querySelectorAll(".rating-select button").forEach((star) => {
+        star.classList.remove("selected");
+        star.textContent = "☆";
+      });
+      showToast("Thank you for sharing a little love!");
+    } catch (error) {
+      console.error("Could not save feedback to Supabase.", error);
+      document.getElementById("feedback-status").textContent =
+        error.code === "PGRST205"
+          ? "Your review was not shared because the Supabase feedback table is missing. Run supabase-feedback.sql in your Supabase SQL Editor."
+          : "Your review was not shared. Check your connection and Supabase setup, then try again.";
+      showToast("Couldn't share your feedback. Please try again.");
+    } finally {
+      submitButton.disabled = false;
+    }
   });
-  showToast("Thank you for sharing a little love!");
-});
 
 document.addEventListener("click", (event) => {
   const tab = event.target.closest(".auth-tab");
@@ -647,6 +805,13 @@ document.addEventListener("click", (event) => {
   if (actionButton) {
     const { action, id } = actionButton.dataset;
     if (action === "sell") openListing();
+    if (action === "login") showAuth("login");
+    if (action === "logout") {
+      currentUser = null;
+      localStorage.removeItem(STORAGE.user);
+      renderAccountButton();
+      showToast("You've been logged out.");
+    }
     if (action === "cart") {
       if (requireUser("cart")) openCart();
     }
@@ -698,21 +863,20 @@ document.addEventListener("click", (event) => {
   }
   if (event.target.closest(".avatar-button")) {
     if (currentUser) {
-      const shouldSignOut = window.confirm(
-        `Hi ${currentUser.name || currentUser.email}! Log out?`,
+      showToast(
+        `You're logged in as ${currentUser.name || currentUser.email}.`,
       );
-      if (shouldSignOut) {
-        currentUser = null;
-        localStorage.removeItem(STORAGE.user);
-        renderAccountButton();
-        showToast("You've been logged out.");
-      }
     } else showAuth("login");
   }
 });
 
 function renderAccountButton() {
   const button = document.querySelector(".avatar-button");
+  const loginButton = document.querySelector(".login-button");
+  const logoutButton = document.querySelector(".logout-button");
+  loginButton.hidden = Boolean(currentUser);
+  button.hidden = !currentUser;
+  logoutButton.hidden = !currentUser;
   button.textContent = currentUser
     ? escapeHTML(
         (currentUser.name || currentUser.email).slice(0, 1).toUpperCase(),
@@ -967,3 +1131,4 @@ document.getElementById("year").textContent = new Date().getFullYear();
 renderProducts();
 renderCart();
 renderAccountButton();
+initializeFeedback();
