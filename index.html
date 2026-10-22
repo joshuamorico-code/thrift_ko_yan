@@ -61,12 +61,14 @@
             <path d="M9 9V6a3 3 0 0 1 6 0v3"></path></svg
           ><span class="bag-count">0</span>
         </button>
-        <button
-          class="avatar-button"
-          data-action="account"
-          aria-label="Account"
-        >
+        <button class="login-button" data-action="login" hidden>
+          Log in
+        </button>
+        <button class="avatar-button" data-action="account" aria-label="Account">
           ♡
+        </button>
+        <button class="logout-button" data-action="logout" hidden>
+          Log out
         </button>
         <button class="menu-toggle" aria-label="Toggle menu">☰</button>
       </div>
@@ -223,7 +225,26 @@
             Tell us what you loved. Your note helps our little thrift community
             grow.
           </p>
+          <p class="feedback-privacy-note">
+            Your review is public. Use a display name or post anonymously.
+          </p>
           <form id="feedback-form" class="feedback-form">
+            <div class="feedback-identity">
+              <label for="feedback-name">Display name</label>
+              <input
+                id="feedback-name"
+                name="displayName"
+                type="text"
+                maxlength="60"
+                placeholder="Name shown with your review"
+                autocomplete="nickname"
+                required
+              />
+              <label class="feedback-anonymous">
+                <input id="feedback-anonymous" type="checkbox" />
+                Post anonymously
+              </label>
+            </div>
             <div
               class="rating-select"
               role="group"
@@ -251,6 +272,8 @@
               Send a little love <span>↗</span>
             </button>
           </form>
+          <p class="feedback-status" id="feedback-status" role="status" aria-live="polite"></p>
+          <div class="feedback-list" id="feedback-list" aria-live="polite"></div>
         </div>
         <div class="feedback-decoration">
           <span class="feedback-flower">✳</span
@@ -664,6 +687,7 @@
         </p>
       </section>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="javascript.js"></script>
   </body>
 </html>
